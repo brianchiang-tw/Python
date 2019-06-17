@@ -10,7 +10,7 @@ from library.measure_time_performance import measure_elapsed_time
 
 
 
-###      1. Generate 5 random numbers
+###     1. Generate 5 random numbers
 random_number_list = random_number_gen( length =5 )
 
 print("\n 5 random numbers are generated as below:")
