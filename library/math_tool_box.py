@@ -46,41 +46,41 @@ class StatMaker:
         return std
 
 
-list_test = list( range(1,6) )
+# list_test = list( range(1,6) )
 
 # [1, 2, 3, 4, 5]
-print( list_test )
+# print( list_test )
 
-random.shuffle( list_test )
+# random.shuffle( list_test )
 
 # example output:
 # [3, 1, 2, 5, 4]
-print( list_test )
+# print( list_test )
 
-stat_info = StatMaker(list_test)
-min_value = stat_info.get_min()
-max_value = stat_info.get_max()
-sum_value = stat_info.get_sum()
-avg_value = stat_info.get_avg()
-std_value = stat_info.get_std()
+# stat_info = StatMaker(list_test)
+# min_value = stat_info.get_min()
+# max_value = stat_info.get_max()
+# sum_value = stat_info.get_sum()
+# avg_value = stat_info.get_avg()
+# std_value = stat_info.get_std()
 
 
 
 
 # 1
-print( min_value )
+# print( min_value )
 
 # 5
-print( max_value )
+# print( max_value )
 
 # 15
-print( sum_value )
+# print( sum_value )
 
 # 3.0
-print( avg_value )
+# print( avg_value )
 
 # 1.5811388300841898
-print( std_value )
+# print( std_value )
 
 
 

@@ -5,19 +5,31 @@ def measure_target():
     return
 
 
-time1 = time.perf_counter()
+def measure_elapsed_time(f, *args):
 
-measure_target()
+    time1 = time.perf_counter()
+    obj_return = f(*args)
+    time2 = time.perf_counter()
 
-time2 = time.perf_counter()
+    print('{:s} took {:.9f} ms to run'.format(f.__name__, (time2-time1)*1e3 ))
+    # print( obj_return )
+    return obj_return
+
+
+
+# time1 = time.perf_counter()
+
+# measure_target()
+
+# time2 = time.perf_counter()
 
 # example output:
 # measure_target took 4.993910050 second to run
 # measure_target took 4993.910050000 ms to run
 # measure_target took 4993910.050000000 μs to run
-print('{:s} took {:.9f} second to run'.format(measure_target.__name__, (time2-time1) ))
-print('{:s} took {:.9f} ms to run'.format(measure_target.__name__, (time2-time1)*1e3 ))
-print('{:s} took {:.9f} μs to run'.format(measure_target.__name__, (time2-time1)*1e6 ))
+# print('{:s} took {:.9f} second to run'.format(measure_target.__name__, (time2-time1) ))
+# print('{:s} took {:.9f} ms to run'.format(measure_target.__name__, (time2-time1)*1e3 ))
+# print('{:s} took {:.9f} μs to run'.format(measure_target.__name__, (time2-time1)*1e6 ))
 
 
 
