@@ -5,6 +5,8 @@ def demo_range(n):
     x = 0
 
     while True:
+
+        # "yield" seems like a non-blocking "return"
         yield x
         x += 1
 
