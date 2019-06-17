@@ -45,6 +45,8 @@ def random_number_gen( length = 1, lower_bound = 0, upper_bound = 2**31 - 2 ):
 
 output = random_number_gen(length = 5, lower_bound = 10, upper_bound = 20)
 
+# example output:
+# [10, 17, 10, 16, 12]
 print( output )
 
 
