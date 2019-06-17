@@ -11,7 +11,7 @@ measure_target()
 
 time2 = time.perf_counter()
 
-# example outptu:
+# example output:
 # measure_target took 4.993910050 second to run
 # measure_target took 4993.910050000 ms to run
 # measure_target took 4993910.050000000 μs to run
