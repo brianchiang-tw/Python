@@ -33,12 +33,12 @@ for n in range( 1, 6 ):
     size_array.append( 10**n )
 
 for i in range( 0, 5 ):
-    length = size_array[i]
-    # output_array.append( random_number_gen(length, lower_bound = -1, upper_bound = 1, is_float = True) )
 
+    length = size_array[i]
     output_array.append( measure_elapsed_time(random_number_gen, length, -1, 1, True ) )
 
     statistic_info = StatMaker( output_array[i] )
+
     print("Average of list with length {0} = {1}".format( length, statistic_info.get_avg() ) )
     print("Standard deviation of list with length {0} = {1}".format( length, statistic_info.get_std() ) )
     print()
