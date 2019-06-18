@@ -2,10 +2,28 @@
 
 
 # Parse and get MNIST image header from a file handle
+def get_MNIST_label_header( file_handle ):
+
+    byte_stream = file_handle.read(8)
+
+
+    if ( not byte_stream ) or ( len(byte_stream) != 8 ):
+        # Handle End-of-File, or exception
+        print("Failed to read label header")
+        return -1
+    else:
+
+        number_of_items = (byte_stream[4] << 24) | (byte_stream[5] << 16) | (byte_stream[6] << 8) | (byte_stream[7])
+
+    return ( number_of_items )
+
+
+
+# Parse and get MNIST image header from a file handle
 def get_MNIST_image_header( file_handle ):
 
     byte_stream = file_handle.read(16)
-    # print( "byte_s", byte_s)
+
 
     if ( not byte_stream ) or ( len(byte_stream) != 16 ):
         # Handle End-of-File, or exception
@@ -57,6 +75,35 @@ def print_image_array( image_matrix ):
     for y in range( image_height ):
         for x in range( image_width ):
             print( "{:02X}".format( image_matrix[y][x] ), end = ' ' )
+
+        print()    
+
+    # One more extra new line in order to keep output neat and tidy
+    print("\n")
+
+
+
+# Output image into console with padding
+def print_image_array_with_padding( image_matrix , padding_size = 0):
+
+    image_height = len( image_matrix )
+    image_width = len( image_matrix[0] )
+
+    new_height = image_height + int(padding_size*2)
+    new_width = image_width + int(padding_size*2)
+
+
+    for y in range( new_height ):
+        for x in range( new_width ):
+
+            if padding_size <= y < ( padding_size + image_height ) and padding_size <= x < ( padding_size + image_width ):
+                # Draw original image in main center area
+                print( "{:02X}".format( image_matrix[y-padding_size][x-padding_size] ), end = ' ' )
+                # print("Img")
+
+            else:
+                # Padding boundary with dummy 0s
+                print( "{:02X}".format( 0x00 ), end = ' ' )
 
         print()    
 
