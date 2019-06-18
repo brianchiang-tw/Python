@@ -1,5 +1,6 @@
 import functools
 import random
+import math
 
 class StatMaker:
     container = []

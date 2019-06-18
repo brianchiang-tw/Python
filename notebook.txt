@@ -1,0 +1,18 @@
+template of open file:
+
+with open(filename, 'rb') as f:
+   while 1:
+      byte_s = f.read(1)
+      if not byte_s:
+         break
+      byte = byte_s[0]
+      ...
+
+
+
+#===================================================
+template of rounding-up or rounding-down
+
+v = 3.147
+print(math.ceil(v*100)/100)  # -> 2.36
+print(math.floor(v*100)/100)  # -> 2.35

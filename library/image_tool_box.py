@@ -33,8 +33,7 @@ def get_MNIST_image_header( file_handle ):
 
         # Parse header, and we get height and width of image
         img_height = (byte_stream[8] << 24) | (byte_stream[9] << 16) | (byte_stream[10] << 8) | (byte_stream[11])
-
-
+        
         img_width = (byte_stream[12] << 24) | (byte_stream[13] << 16) | (byte_stream[14] << 8) | (byte_stream[15])
 
 
@@ -99,7 +98,6 @@ def print_image_array_with_padding( image_matrix , padding_size = 0):
             if padding_size <= y < ( padding_size + image_height ) and padding_size <= x < ( padding_size + image_width ):
                 # Draw original image in main center area
                 print( "{:02X}".format( image_matrix[y-padding_size][x-padding_size] ), end = ' ' )
-                # print("Img")
 
             else:
                 # Padding boundary with dummy 0s
