@@ -3,13 +3,7 @@ import numpy as np
 import imageio
 
 # For image operation
-from library.image_tool_box import get_MNIST_image_header
-from library.image_tool_box import get_MNIST_label_header
-
-from library.image_tool_box import read_one_MNIST_image
-from library.image_tool_box import print_image_array
-from library.image_tool_box import print_image_array_with_padding
-from library.image_tool_box import gen_average_image
+from library.image_tool_box import * 
 
 # For math/statistic operation
 from library.math_tool_box import StatMaker
