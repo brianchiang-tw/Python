@@ -1,6 +1,8 @@
 import scipy.signal
 
-from library.image_tool_box import *
+from library.image_tool_box import extend_image_array_with_padding
+from library.image_tool_box import img_conv_kernel
+from library.image_tool_box import print_image_array
 
 image = [[1, 2, 3, 4, 5, 6, 7],
          [8, 9, 10, 11, 12, 13, 14],
@@ -42,7 +44,7 @@ print_image_array( img_conv_ker )
 
 
 
-print( "SciPy")
+print( "SciPy's 2D convolution demo")
 
 
 

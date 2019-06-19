@@ -98,7 +98,7 @@ def print_image_array( image_matrix, mode = "Hex" ):
             if "Hex" == mode:
                 print( "{:02X}".format( image_matrix[y][x] ), end = ' ' )
             elif "Decimal" == mode:
-                print( "{: 6d}".format( image_matrix[y][x] ), end = ' ' )
+                print( "{: 10d}".format( image_matrix[y][x] ), end = ' ' )
             else:
                 print("Invliad print mode  {:<10} is not supported.".format(mode) )
 
@@ -357,3 +357,11 @@ def array_transpose( array_2d ):
     array_t = [*zip(*array_2d)]
 
     return array_t
+
+
+
+def array_with_negation( array_2d ):
+
+    array_negation = np.negative( array_2d )
+
+    return array_negation
