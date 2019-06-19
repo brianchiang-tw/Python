@@ -1,3 +1,6 @@
+# For image output to bmp file
+import numpy as np
+import imageio
 
 
 
@@ -94,7 +97,7 @@ def print_image_array( image_matrix, mode = "Hex" ):
 
             if "Hex" == mode:
                 print( "{:02X}".format( image_matrix[y][x] ), end = ' ' )
-            elif "UInt8" == mode:
+            elif "Decimal" == mode:
                 print( "{: 5d}".format( image_matrix[y][x] ), end = ' ' )
             else:
                 print("Invliad print mode  {:<10} is not supported.".format(mode) )
@@ -259,6 +262,22 @@ def img_conv_kernel(img, kernel):
 
 
 
+# Conduct absolute value trasform over partial differential image
+def absolute_value_tranform_of_partial_differential_img( diff_img ):
+
+    ( img_h, img_w ) = get_size_of_image( diff_img )
+
+    # Create an image array for output 
+    output_image = create_image_matrx( img_h, img_w, 0x00 )
+
+    for y in range(img_h):
+        for x in range(img_w):
+
+            output_image[y][x] = abs(diff_img[y][x])
+
+    return output_image
+
+
 # Calculate and create Sobel gradient image
 def get_Sobel_gradient_magnitude( img_Gx, img_Gy ):
 
@@ -283,13 +302,13 @@ def get_Sobel_gradient_magnitude( img_Gx, img_Gy ):
 
 # Get the maximum value of an given image
 def get_max_value_of_image( img ):
-    
+
     max_value =  max( map(max, img ) )
     return max_value
 
 
 
-def get_edge_image( grad_magnitude_image, intensity_threshold = 0.8 ):
+def get_edge_image( grad_magnitude_image, threshold_factor = 0.8 ):
 
     ( img_h, img_w ) = get_size_of_image( grad_magnitude_image )
 
@@ -301,11 +320,31 @@ def get_edge_image( grad_magnitude_image, intensity_threshold = 0.8 ):
     for y in range(img_h):
         for x in range(img_w):
 
-            ratio = ( grad_magnitude_image[y][x] / max_value )
+            ratio = grad_magnitude_image[y][x] / max_value
 
-            if ratio >= intensity_threshold:
+            if ratio >= threshold_factor:
                 # Mark those pixels above intensity threshold as edge (white pixel)
-                edge_image[y][x] = 255
+                edge_image[y][x] = int( ratio * 255 )
 
     
     return edge_image   
+
+
+
+def save_to_bmp( image_matrix, file_name ):
+
+    if None == image_matrix or 0 == len(image_matrix) or 0 == len(image_matrix[0]):
+        print("image_matrix is not a valid input")
+        return None
+
+    else:
+        # Output and save first image as BitMap(.bmp) file.
+
+        print("Image is saved into '{}.bmp'.".format(file_name) )
+
+        # Convert python 2D array(list) to numpy array on datatype uint8.
+        # data type: np.uint8 = Unsigned 8 bit integer, from 0 to 255
+        numpu_array = np.array( object=image_matrix, dtype=np.uint8 )
+
+        # Save it from numpy array to bmp file
+        imageio.imwrite( file_name+".bmp", numpu_array )

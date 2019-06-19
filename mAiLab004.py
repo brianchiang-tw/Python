@@ -1,6 +1,5 @@
 # For image output to bmp file
-import numpy as np
-import imageio
+import os
 
 # For image operation
 from library.image_tool_box import * 
@@ -25,6 +24,7 @@ import math
 file_name_of_MNIST_image = 'train-images.idx3-ubyte'
 file_name_of_MNIST_label = 'train-labels.idx1-ubyte'
 data_directory_path = 'data_of_mAiLab003/'
+ouput_directory_path = './output_of_mAiLab004/'
 path_of_MNIST_image = data_directory_path + file_name_of_MNIST_image
 path_of_MNIST_label = data_directory_path + file_name_of_MNIST_label
 
@@ -39,7 +39,8 @@ kernel_Gy = [[+1, +2, +1],
             [-1, -2, -1]
             ]
 
-
+if not os.path.isdir(ouput_directory_path):
+    os.mkdir(ouput_directory_path)
 
 
 with open(path_of_MNIST_image, 'rb') as file_handle:
@@ -55,7 +56,7 @@ with open(path_of_MNIST_image, 'rb') as file_handle:
         (img_height, img_width) = header_return
 
         image_container = []
-
+        grad_magnitude_container = []
         edge_img_container = []
 
         for index in range(5):
@@ -70,47 +71,70 @@ with open(path_of_MNIST_image, 'rb') as file_handle:
             else:
                 image_matrix = image_return
 
-                # Push origianl source image into image container
+                    # Push origianl source image into image container
                 image_container.append(image_matrix)
 
-                # Convolve image_matrix with kernel Gx
+                    # Convolve image_matrix with kernel Gx
                 Gx_conv_image = img_conv_kernel( image_matrix, kernel_Gx )
 
-                # Convolve image_matrix with kernel Gy
+                    # Convolve image_matrix with kernel Gy
                 Gy_conv_image = img_conv_kernel( image_matrix, kernel_Gy )
         
-                # Compute gradient magnitude from Gx_conv_image and Gy_conv_image
+                    # Compute gradient magnitude from Gx_conv_image and Gy_conv_image
                 gradient_magnitude_image = get_Sobel_gradient_magnitude(Gx_conv_image, Gy_conv_image)
 
-                # Compute edge image from gradient magnitude
+
+
+                    # Push Gx image, Gy image, and gradient magnitude image into its container
+                grad_magnitude_container.append( (Gx_conv_image, Gy_conv_image, gradient_magnitude_image ) )
+
+                    # Compute edge image from gradient magnitude
                 edge_image = get_edge_image( gradient_magnitude_image )
 
-                # Push edge image into its container
+                    # Push edge image into its container
                 edge_img_container.append( image_matrix )
 
 
 
 ###     2. Output Gx, Gy convolution image for first 5 input image, with extended image size 30 x 30 and zero padding.
 
-# print_first image
-print("First image array:")
-print_image_array( image_container[0] )
+    for index in range(5):
 
-print("First image convolve kernel_Gx:")
-print_image_array( gradient_img_container[0][0] , "UInt8")
+        serial_number = index+1
 
-print("First image convolve kernel_Gy:")
-print_image_array( gradient_img_container[0][1] , "UInt8")
-
-print("First image Sobel gradient magnitude image:")
-print_image_array( gradient_img_container[0][2] , "UInt8")
+            # Source image
+        # print("Original source image array_#{}:".format(serial_number) )
+        # print_image_array( image_container[index] )
 
 
+            # Gx edge image
+        gx = grad_magnitude_container[index][0]
+        gx_abs_image = absolute_value_tranform_of_partial_differential_img( gx )
 
-edge_image = get_edge_image( gradient_img_container[0][2], 0.5 )
 
-print("Edge image")
-print_image_array( edge_image, "UInt8" )
+        gx_edge = get_edge_image( gx_abs_image, 0.1 )
+        # print("Sobel Gx edge image_#{}:".format( serial_number ) )
+        # print_image_array( gx_edge, "Decimal")
+        save_to_bmp(gx_edge, ouput_directory_path+"image_"+ str(serial_number)+"_Gx_edge")
+
+
+            # Gy edge image
+        gy = grad_magnitude_container[index][1]
+        gy_abs_image = absolute_value_tranform_of_partial_differential_img( gy )
+        gy_edge = get_edge_image( gy_abs_image, 0.1 )
+        save_to_bmp(gy_edge, ouput_directory_path+"image_"+ str(serial_number)+"_Gy_edge")
+
+            # Edge image
+        edge_image = edge_img_container[index]
+
+        print("Edge image_#{}:".format(serial_number) )
+        print_image_array( edge_image, "Decimal" )
+
+        save_to_bmp(edge_image, ouput_directory_path+"image_"+str(serial_number)+"_edge")
+
+
+
+
 
 ###     3. Output the average image (with rounding down to nearest integer) of the first ten from test file 
 #          , "train-images.idx3-ubyte", with image size 28 x 28.
