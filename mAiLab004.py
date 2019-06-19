@@ -9,7 +9,7 @@ from library.math_tool_box import StatMaker
 import math
 
 
-###     Prelue: Downlaod and unpack those 4 test data from MNIST database.
+###     Prelude: Downlaod and unpack those 4 test data from MNIST database.
 
 # train-images-idx3-ubyte.gz: training set images (9912422 bytes)
 # train-labels-idx1-ubyte.gz: training set labels (28881 bytes)
