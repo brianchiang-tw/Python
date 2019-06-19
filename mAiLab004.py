@@ -142,7 +142,7 @@ with open(path_of_MNIST_image, 'rb') as file_handle:
 
 
 
-###     2. Output Gx, Gy convolution image for first 5 input image, with extended image size 30 x 30 and zero padding.
+###     1. Output Gx, Gy convolution image for first 5 input image, with extended image size 30 x 30 and zero padding.
 
 for index in range(5):
 
@@ -176,6 +176,8 @@ for index in range(5):
     save_to_bmp(edge_image, ouput_directory_path+"image_"+str(serial_number)+"_edge")
 
 
+
+###     2. Output the result, which is first input source image convolutes with Sobel filter kernel of size 5x5, 7x7,and 9x9.
 
     # Convolve image_matrix with kernel Gx_5x5
 Gx_conv_image = img_conv_kernel( image_container[0], kernel_Gx_5 )
