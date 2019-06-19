@@ -1,6 +1,17 @@
 
 
 
+# Get height and width from an image array
+def get_size_of_image( img ):
+
+    height = len( img )
+    width = len( img[0] )
+
+    return (height, width)
+
+
+
+
 # Parse and get MNIST image header from a file handle
 def get_MNIST_label_header( file_handle ):
 
@@ -253,7 +264,7 @@ def get_Sobel_gradient_magnitude( img_Gx, img_Gy ):
 
 
     img_h = len( img_Gx )
-    img_w = len( img_Gx )
+    img_w = len( img_Gx[0] )
 
     # Create an image array for output convolution result
     gradient_magnitude_image = create_image_matrx( img_h, img_w, 0x00 )
@@ -270,4 +281,31 @@ def get_Sobel_gradient_magnitude( img_Gx, img_Gy ):
 
 
 
+# Get the maximum value of an given image
+def get_max_value_of_image( img ):
     
+    max_value =  max( map(max, img ) )
+    return max_value
+
+
+
+def get_edge_image( grad_magnitude_image, intensity_threshold = 0.8 ):
+
+    ( img_h, img_w ) = get_size_of_image( grad_magnitude_image )
+
+    max_value = get_max_value_of_image(grad_magnitude_image)
+
+    # Create an image array for output convolution result
+    edge_image = create_image_matrx( img_h, img_w, 0x00 )
+
+    for y in range(img_h):
+        for x in range(img_w):
+
+            ratio = ( grad_magnitude_image[y][x] / max_value )
+
+            if ratio >= intensity_threshold:
+                # Mark those pixels above intensity threshold as edge (white pixel)
+                edge_image[y][x] = 255
+
+    
+    return edge_image   

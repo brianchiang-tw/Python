@@ -56,7 +56,7 @@ with open(path_of_MNIST_image, 'rb') as file_handle:
 
         image_container = []
 
-        gradient_img_container = []
+        edge_img_container = []
 
         for index in range(5):
 
@@ -70,7 +70,7 @@ with open(path_of_MNIST_image, 'rb') as file_handle:
             else:
                 image_matrix = image_return
 
-                # Push image_matrix into container
+                # Push origianl source image into image container
                 image_container.append(image_matrix)
 
                 # Convolve image_matrix with kernel Gx
@@ -80,10 +80,13 @@ with open(path_of_MNIST_image, 'rb') as file_handle:
                 Gy_conv_image = img_conv_kernel( image_matrix, kernel_Gy )
         
                 # Compute gradient magnitude from Gx_conv_image and Gy_conv_image
-
                 gradient_magnitude_image = get_Sobel_gradient_magnitude(Gx_conv_image, Gy_conv_image)
-        
-                gradient_img_container.append( (Gx_conv_image, Gy_conv_image, gradient_magnitude_image) )
+
+                # Compute edge image from gradient magnitude
+                edge_image = get_edge_image( gradient_magnitude_image )
+
+                # Push edge image into its container
+                edge_img_container.append( image_matrix )
 
 
 
@@ -101,6 +104,13 @@ print_image_array( gradient_img_container[0][1] , "UInt8")
 
 print("First image Sobel gradient magnitude image:")
 print_image_array( gradient_img_container[0][2] , "UInt8")
+
+
+
+edge_image = get_edge_image( gradient_img_container[0][2], 0.5 )
+
+print("Edge image")
+print_image_array( edge_image, "UInt8" )
 
 ###     3. Output the average image (with rounding down to nearest integer) of the first ten from test file 
 #          , "train-images.idx3-ubyte", with image size 28 x 28.
