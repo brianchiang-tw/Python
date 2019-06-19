@@ -39,6 +39,11 @@ kernel_Gy = [[+1, +2, +1],
             [-1, -2, -1]
             ]
 
+
+
+
+
+# Create output directory for edge image
 if not os.path.isdir(ouput_directory_path):
     os.mkdir(ouput_directory_path)
 
@@ -110,11 +115,8 @@ with open(path_of_MNIST_image, 'rb') as file_handle:
             # Gx edge image
         gx = grad_magnitude_container[index][0]
         gx_abs_image = absolute_value_tranform_of_partial_differential_img( gx )
-
-
         gx_edge = get_edge_image( gx_abs_image, 0.1 )
-        # print("Sobel Gx edge image_#{}:".format( serial_number ) )
-        # print_image_array( gx_edge, "Decimal")
+
         save_to_bmp(gx_edge, ouput_directory_path+"image_"+ str(serial_number)+"_Gx_edge")
 
 
@@ -122,13 +124,14 @@ with open(path_of_MNIST_image, 'rb') as file_handle:
         gy = grad_magnitude_container[index][1]
         gy_abs_image = absolute_value_tranform_of_partial_differential_img( gy )
         gy_edge = get_edge_image( gy_abs_image, 0.1 )
+
         save_to_bmp(gy_edge, ouput_directory_path+"image_"+ str(serial_number)+"_Gy_edge")
 
             # Edge image
         edge_image = edge_img_container[index]
 
-        print("Edge image_#{}:".format(serial_number) )
-        print_image_array( edge_image, "Decimal" )
+        # print("Edge image_#{}:".format(serial_number) )
+        # print_image_array( edge_image, "Decimal" )
 
         save_to_bmp(edge_image, ouput_directory_path+"image_"+str(serial_number)+"_edge")
 
@@ -136,62 +139,11 @@ with open(path_of_MNIST_image, 'rb') as file_handle:
 
 
 
-###     3. Output the average image (with rounding down to nearest integer) of the first ten from test file 
-#          , "train-images.idx3-ubyte", with image size 28 x 28.
-
-# print average image of first ten
-# print("Average image array of first ten:")
-# print_image_array( average_image_of_first_ten )
 
 
 
-###     4. Output the average label value (with rounding down to hundredths) of the first ten from test file
-#          , "train-labels.idx1-ubyte".
-'''
-with open(path_of_MNIST_label, 'rb') as file_handle:
-
-    # Read header of MNIST label file
-    header_return = get_MNIST_label_header(file_handle)
-
-    if -1 == header_return:
-        # Handle End-of-File, or exception
-        pass
-
-    else:
-        number_of_items  = header_return
-
-        # Read first 10 labels, then save them into label_series
-        label_series = list( file_handle.read(10) )
-        label_stat = StatMaker( label_series )
-        avg = label_stat.get_avg()
-        # rounding down to hundredths 
-        avg = math.floor( (avg * 100) / 100 )
-        print("The average value of first ten labels in '{:<20}' is {:+02.2f}\n".format( str(file_name_of_MNIST_label), avg ) )
 
 
-
-###     5. Extend and output first image to 32x32 from test file, with zero padding on boundary area.
-
-new_side_length = 32
-original_side_length = img_width
-
-padding_size = (new_side_length - original_side_length)//2
-
-print("First image array extneds to 32x32 with zero padding over boundary:")
-print_image_array_with_padding( image_container[0], padding_size )
-
-
-
-###     6. Output and save first image as BitMap(.bmp) file.
-
-print("First image is saved into 'first_image.bmp'.")
-# Convert python 2D array(list) to numpy array on datatype uint8.
-# data type: np.uint8 = Unsigned 8 bit integer, from 0 to 255
-first_image = np.array( object=image_container[0], dtype=np.uint8 )
-
-# Save it from numpy array to bmp file
-imageio.imwrite('first_image.bmp', first_image)
-'''
 
 
 '''

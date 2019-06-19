@@ -348,3 +348,12 @@ def save_to_bmp( image_matrix, file_name ):
 
         # Save it from numpy array to bmp file
         imageio.imwrite( file_name+".bmp", numpu_array )
+
+
+
+# Transpose a 2d array
+def array_transpose( array_2d ):
+
+    array_t = [*zip(*array_2d)]
+
+    return array_t
