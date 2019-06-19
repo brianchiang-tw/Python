@@ -41,6 +41,13 @@ def get_MNIST_image_header( file_handle ):
 
 
 
+# Create an image matrix with heigh, width and default pixel value
+def create_image_matrx( height = 2 , width = 2, default_pixel_value = 0 ): 
+    
+    image_matrix = [ [ default_pixel_value for x in range(width) ] for y in range(height)  ]
+    return image_matrix
+
+
 # Read and store one image from a file handle of MNIST image
 def read_one_MNIST_image( file_handle, h, w ):
 
@@ -48,7 +55,8 @@ def read_one_MNIST_image( file_handle, h, w ):
     raw_image_bytes = file_handle.read( size_of_one_image )
 
     # Create a 2D array of h x w, for storing image pixels
-    image_matrix = [ [ 0 for x in range(w) ] for y in range(h) ]
+    # image_matrix = [ [ 0 for x in range(w) ] for y in range(h) ]
+    image_matrix = create_image_matrx( h, w, 0x00 )
 
     if ( not raw_image_bytes ) or ( len(raw_image_bytes) != size_of_one_image ) :
         # Handle End-of-File, or exception
@@ -108,6 +116,20 @@ def print_image_array_with_padding( image_matrix , padding_size = 0):
     # One more extra new line in order to keep output neat and tidy
     print("\n")
 
+
+
+def extend_image_array_with_padding( image_matrix, padding_size = 0, padding_item = 0x00 ):
+
+    image_height = len( image_matrix )
+    image_width = len( image_matrix[0] )
+
+    new_height = image_height + int( padding_size * 2 )
+    new_width = image_width + int( padding_size * 2 )
+
+    extended_image = create_image_matrx( new_height, new_width, 0x00 )
+
+
+    return extended_image
 
 
 # Generate average image from image container
