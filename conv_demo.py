@@ -1,5 +1,7 @@
 import scipy.signal
 
+from library.image_tool_box import *
+
 image = [[1, 2, 3, 4, 5, 6, 7],
          [8, 9, 10, 11, 12, 13, 14],
          [15, 16, 17, 18, 19, 20, 21],
@@ -27,30 +29,26 @@ print( filter_kernel_2[0][2] )
 
 
 
-def img_conv_kernel(img, kernel):
+extended_image = extend_image_array_with_padding(image, 1, 0x00)
+print_image_array( image )
 
-    img_h = len( img )
-    img_w = len( img[0] )
-
-    kernel_h = len( kernel )
-    kernel_w = len( kernel[0] )
-
-
-    return 
+print_image_array( extended_image )
 
 
 
+img_conv_ker = img_conv_kernel(image, filter_kernel_1)
+
+print_image_array( img_conv_ker )
 
 
 
+print( "SciPy")
 
 
 
+output_1 = scipy.signal.convolve2d(image, filter_kernel_1, mode='same', boundary='fill', fillvalue=0)
 
+# output_2 = scipy.signal.convolve2d(image, filter_kernel_2, mode='same', boundary='fill', fillvalue=0)
 
-# output_1 = scipy.signal.convolve2d(image, filter_kernel_1, mode='same', boundary='fill', fillvalue=0)
-
-output_2 = scipy.signal.convolve2d(image, filter_kernel_2, mode='same', boundary='fill', fillvalue=0)
-
-# print( output_1 )
-print( output_2 )
+print( output_1 )
+# print( output_2 )

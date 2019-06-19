@@ -29,6 +29,16 @@ path_of_MNIST_image = data_directory_path + file_name_of_MNIST_image
 path_of_MNIST_label = data_directory_path + file_name_of_MNIST_label
 
 
+kernel_Gx = [[-1, 0, +1],
+            [-2, 0, +2],
+            [-1, 0, +1]
+            ]
+
+kernel_Gy = [[+1, +2, +1],
+            [0, 0, 0],
+            [-1, -2, -1]
+            ]
+
 
 
 
@@ -46,7 +56,9 @@ with open(path_of_MNIST_image, 'rb') as file_handle:
 
         image_container = []
 
-        for index in range(10):
+        gradient_img_container = []
+
+        for index in range(5):
 
             image_return = read_one_MNIST_image(file_handle, img_height, img_width)
 
@@ -61,31 +73,47 @@ with open(path_of_MNIST_image, 'rb') as file_handle:
                 # Push image_matrix into container
                 image_container.append(image_matrix)
 
+                # Convolve image_matrix with kernel Gx
+                Gx_conv_image = img_conv_kernel( image_matrix, kernel_Gx )
+
+                # Convolve image_matrix with kernel Gy
+                Gy_conv_image = img_conv_kernel( image_matrix, kernel_Gy )
         
-        average_image_of_first_ten = gen_average_image( image_container )
+                # Compute gradient magnitude from Gx_conv_image and Gy_conv_image
+
+                gradient_magnitude_image = get_Sobel_gradient_magnitude(Gx_conv_image, Gy_conv_image)
+        
+                gradient_img_container.append( (Gx_conv_image, Gy_conv_image, gradient_magnitude_image) )
 
 
 
-###     2. Output first image from test file, "train-images.idx3-ubyte", with image size 28 x 28.
+###     2. Output Gx, Gy convolution image for first 5 input image, with extended image size 30 x 30 and zero padding.
 
 # print_first image
 print("First image array:")
 print_image_array( image_container[0] )
 
+print("First image convolve kernel_Gx:")
+print_image_array( gradient_img_container[0][0] , "UInt8")
 
+print("First image convolve kernel_Gy:")
+print_image_array( gradient_img_container[0][1] , "UInt8")
+
+print("First image Sobel gradient magnitude image:")
+print_image_array( gradient_img_container[0][2] , "UInt8")
 
 ###     3. Output the average image (with rounding down to nearest integer) of the first ten from test file 
 #          , "train-images.idx3-ubyte", with image size 28 x 28.
 
 # print average image of first ten
-print("Average image array of first ten:")
-print_image_array( average_image_of_first_ten )
+# print("Average image array of first ten:")
+# print_image_array( average_image_of_first_ten )
 
 
 
 ###     4. Output the average label value (with rounding down to hundredths) of the first ten from test file
 #          , "train-labels.idx1-ubyte".
-
+'''
 with open(path_of_MNIST_label, 'rb') as file_handle:
 
     # Read header of MNIST label file
@@ -129,7 +157,7 @@ first_image = np.array( object=image_container[0], dtype=np.uint8 )
 
 # Save it from numpy array to bmp file
 imageio.imwrite('first_image.bmp', first_image)
-
+'''
 
 
 '''

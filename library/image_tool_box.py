@@ -55,7 +55,6 @@ def read_one_MNIST_image( file_handle, h, w ):
     raw_image_bytes = file_handle.read( size_of_one_image )
 
     # Create a 2D array of h x w, for storing image pixels
-    # image_matrix = [ [ 0 for x in range(w) ] for y in range(h) ]
     image_matrix = create_image_matrx( h, w, 0x00 )
 
     if ( not raw_image_bytes ) or ( len(raw_image_bytes) != size_of_one_image ) :
@@ -71,7 +70,7 @@ def read_one_MNIST_image( file_handle, h, w ):
 
 
 # Output image into console
-def print_image_array( image_matrix ):
+def print_image_array( image_matrix, mode = "Hex" ):
 
     image_height = len( image_matrix )
 
@@ -81,7 +80,13 @@ def print_image_array( image_matrix ):
 
     for y in range( image_height ):
         for x in range( image_width ):
-            print( "{:02X}".format( image_matrix[y][x] ), end = ' ' )
+
+            if "Hex" == mode:
+                print( "{:02X}".format( image_matrix[y][x] ), end = ' ' )
+            elif "UInt8" == mode:
+                print( "{: 5d}".format( image_matrix[y][x] ), end = ' ' )
+            else:
+                print("Invliad print mode  {:<10} is not supported.".format(mode) )
 
         print()    
 
@@ -118,6 +123,7 @@ def print_image_array_with_padding( image_matrix , padding_size = 0):
 
 
 
+# Extend an image with specified padding size and padding item.
 def extend_image_array_with_padding( image_matrix, padding_size = 0, padding_item = 0x00 ):
 
     image_height = len( image_matrix )
@@ -127,6 +133,17 @@ def extend_image_array_with_padding( image_matrix, padding_size = 0, padding_ite
     new_width = image_width + int( padding_size * 2 )
 
     extended_image = create_image_matrx( new_height, new_width, 0x00 )
+
+    for y in range( new_height):
+        for x in range( new_width ):
+
+            if padding_size <= y < ( padding_size + image_height ) and padding_size <= x < ( padding_size + image_width ):
+                # Copy original image in main center area
+                extended_image[ y ][ x ] = image_matrix[ y-padding_size ][ x-padding_size ]
+
+            else:
+                # Padding boundary with specified dummy item
+                extended_image[ y ][ x ] = padding_item
 
 
     return extended_image
@@ -162,3 +179,95 @@ def gen_average_image( image_container ):
 
 
     return image_avg
+
+
+
+# Conduct a 2D image convolution with specified kernel 
+def img_conv_kernel(img, kernel):
+
+    img_h = len( img )
+    img_w = len( img[0] )
+
+    kernel_h = len( kernel )
+    kernel_w = len( kernel[0] )
+    kernel_size = kernel_h
+
+    # Calculate the padding size from kernel size
+    zero_padding_size = kernel_size // 2
+
+    # Locate center position of kernel
+    ker_center_y = kernel_h // 2
+    ker_center_x = kernel_w // 2
+
+    # Pad original image with dummy 0s
+    zero_padding_img = extend_image_array_with_padding( img, zero_padding_size )
+
+    # Create an image array for output convolution result
+    output_image = create_image_matrx( img_h, img_w, 0x00 )
+
+
+    output_img_h = len( output_image )
+    output_img_w = len( output_image[0] )
+
+
+    for y in range(output_img_h):
+        for x in range(output_img_w):
+
+
+            # Coordination translation from output_image to zero-padding image
+            zero_padding_img_y = y + zero_padding_size
+            zero_padding_img_x = x + zero_padding_size
+
+
+            for ker_y in range(kernel_h):
+                
+                # By definition of convolution, 
+                # kernel has to flip on both horizontal and vertical direction before dot operation
+
+                flip_y = ( kernel_h - 1 ) - ker_y
+
+                for ker_x in range(kernel_w):
+
+                    flip_x = ( kernel_w - 1 ) - ker_x
+
+
+
+                    offset_y = (ker_center_y - flip_y)
+                    offset_x = (ker_center_x - flip_x)
+
+                    conv_y = zero_padding_img_y + offset_y
+                    conv_x = zero_padding_img_x + offset_x
+
+                    
+                    # dot operation
+                    output_image[ y ][ x ] += zero_padding_img[ conv_y ][ conv_x ] * kernel[ flip_y ][ flip_x ]
+
+
+
+    return output_image
+
+
+
+# Calculate and create Sobel gradient image
+def get_Sobel_gradient_magnitude( img_Gx, img_Gy ):
+
+
+    img_h = len( img_Gx )
+    img_w = len( img_Gx )
+
+    # Create an image array for output convolution result
+    gradient_magnitude_image = create_image_matrx( img_h, img_w, 0x00 )
+
+    for y in range(img_h):
+        for x in range(img_w):
+
+            # magnitude = sqrt( Gx^2 + Gy^2 )
+            sum_of_squre = img_Gx[y][x]**2 + img_Gy[y][x]**2
+            magnitude = sum_of_squre**(1/2) 
+            gradient_magnitude_image[y][x] = int(magnitude)
+            
+    return gradient_magnitude_image
+
+
+
+    
