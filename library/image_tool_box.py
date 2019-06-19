@@ -360,6 +360,7 @@ def array_transpose( array_2d ):
 
 
 
+# Each element of array multiplies -1
 def array_with_negation( array_2d ):
 
     array_negation = np.negative( array_2d )
