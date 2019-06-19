@@ -40,7 +40,23 @@ kernel_Gy = [[+1, +2, +1],
             ]
 
 
+kernel_Gx_5 = [ [ -5,  -4, 0,  +4,  +5],
+                [ -8, -10, 0, +10,  +8],
+                [-10, -20, 0, +20, +10],
+                [ -8, -10, 0, +10,  +8],
+                [ -5,  -4, 0,  +4,  +5],                                                
+                ]
 
+kernel_Gy_5 = array_transpose( kernel_Gx_5 )
+
+
+
+kernel_Gx_7 = [ [ -5,  -4, 0,  +4,  +5],
+                [ -8, -10, 0, +10,  +8],
+                [-10, -20, 0, +20, +10],
+                [ -8, -10, 0, +10,  +8],
+                [ -5,  -4, 0,  +4,  +5],                                                
+                ]
 
 
 # Create output directory for edge image
@@ -79,6 +95,8 @@ with open(path_of_MNIST_image, 'rb') as file_handle:
                     # Push origianl source image into image container
                 image_container.append(image_matrix)
 
+
+
                     # Convolve image_matrix with kernel Gx
                 Gx_conv_image = img_conv_kernel( image_matrix, kernel_Gx )
 
@@ -94,50 +112,58 @@ with open(path_of_MNIST_image, 'rb') as file_handle:
                 grad_magnitude_container.append( (Gx_conv_image, Gy_conv_image, gradient_magnitude_image ) )
 
                     # Compute edge image from gradient magnitude
-                edge_image = get_edge_image( gradient_magnitude_image )
+                edge_image = get_edge_image( gradient_magnitude_image, threshold_factor=0.7 )
 
                     # Push edge image into its container
-                edge_img_container.append( image_matrix )
+                edge_img_container.append( edge_image )
 
 
 
 ###     2. Output Gx, Gy convolution image for first 5 input image, with extended image size 30 x 30 and zero padding.
 
-    for index in range(5):
+for index in range(5):
 
-        serial_number = index+1
+    serial_number = index+1
 
-            # Source image
-        # print("Original source image array_#{}:".format(serial_number) )
-        # print_image_array( image_container[index] )
-
-
-            # Gx edge image
-        gx = grad_magnitude_container[index][0]
-        gx_abs_image = absolute_value_tranform_of_partial_differential_img( gx )
-        gx_edge = get_edge_image( gx_abs_image, 0.1 )
-
-        save_to_bmp(gx_edge, ouput_directory_path+"image_"+ str(serial_number)+"_Gx_edge")
+        # Source image
+    # print("Original source image array_#{}:".format(serial_number) )
+    # print_image_array( image_container[index] )
 
 
-            # Gy edge image
-        gy = grad_magnitude_container[index][1]
-        gy_abs_image = absolute_value_tranform_of_partial_differential_img( gy )
-        gy_edge = get_edge_image( gy_abs_image, 0.1 )
+        # Gx edge image
+    gx = grad_magnitude_container[index][0]
+    gx_abs_image = absolute_value_tranform_of_partial_differential_img( gx )
+    gx_edge = get_edge_image( gx_abs_image, 0.1 )
 
-        save_to_bmp(gy_edge, ouput_directory_path+"image_"+ str(serial_number)+"_Gy_edge")
-
-            # Edge image
-        edge_image = edge_img_container[index]
-
-        # print("Edge image_#{}:".format(serial_number) )
-        # print_image_array( edge_image, "Decimal" )
-
-        save_to_bmp(edge_image, ouput_directory_path+"image_"+str(serial_number)+"_edge")
+    save_to_bmp(gx_edge, ouput_directory_path+"image_"+ str(serial_number)+"_Gx_edge")
 
 
+        # Gy edge image
+    gy = grad_magnitude_container[index][1]
+    gy_abs_image = absolute_value_tranform_of_partial_differential_img( gy )
+    gy_edge = get_edge_image( gy_abs_image, 0.1 )
+
+    save_to_bmp(gy_edge, ouput_directory_path+"image_"+ str(serial_number)+"_Gy_edge")
+
+        # Edge image
+    edge_image = edge_img_container[index]
+
+    # print("Edge image_#{}:".format(serial_number) )
+    # print_image_array( edge_image, "Decimal" )
+
+    save_to_bmp(edge_image, ouput_directory_path+"image_"+str(serial_number)+"_edge")
 
 
+
+    # Convolve image_matrix with kernel Gx_5x5
+Gx_conv_image = img_conv_kernel( image_container[0], kernel_Gx_5 )
+# print(" 5x5 Gx convolution image of image_#1")
+# print_image_array( Gx_conv_image, "Decimal" )
+
+    # Convolve image_matrix with kernel Gy_7x7
+Gy_conv_image = img_conv_kernel( image_container[0], kernel_Gy_5 )
+# print(" 5x5 Gy convolution image of image_#1")
+# print_image_array( Gy_conv_image, "Decimal" )
 
 
 

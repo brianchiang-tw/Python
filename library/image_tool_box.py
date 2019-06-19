@@ -98,7 +98,7 @@ def print_image_array( image_matrix, mode = "Hex" ):
             if "Hex" == mode:
                 print( "{:02X}".format( image_matrix[y][x] ), end = ' ' )
             elif "Decimal" == mode:
-                print( "{: 5d}".format( image_matrix[y][x] ), end = ' ' )
+                print( "{: 6d}".format( image_matrix[y][x] ), end = ' ' )
             else:
                 print("Invliad print mode  {:<10} is not supported.".format(mode) )
 
