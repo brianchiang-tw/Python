@@ -218,6 +218,8 @@ print_image_array( Gy_conv_image, "Decimal" )
 
 Example output:
 
+###     1. Output and save Sobel_x_gradient, Sobel_y_gradient, as well as edge image of first ten input source images.
+
 Image is saved into './output_of_mAiLab004/image_1_Gx_edge.bmp'.
 Image is saved into './output_of_mAiLab004/image_1_Gy_edge.bmp'.
 Image is saved into './output_of_mAiLab004/image_1_edge.bmp'.
@@ -236,6 +238,7 @@ Image is saved into './output_of_mAiLab004/image_5_edge.bmp'.
 
 
 
+###     2. Output the result, which is first input source image convolutes with Sobel filter kernel of size 5x5, 7x7,and 9x9.
 
 
  5x5 Gx convolution image of image_#1
@@ -425,5 +428,24 @@ Image is saved into './output_of_mAiLab004/image_5_edge.bmp'.
 
 
 
+###     3. Sobel filter is a kind of linear differential operator.
+
+# The operator uses two 3x3 kernels to calculate the discrete differential for horizontal change by Sobel_kernel_x as well as vertical change by Sobel_kernel_y. 
+# In addition, it has a obvious and effective response on the edge of object.
+# Therefore, we can use Sobel filter to implement edge detection.
+
+# Note: we can take Sobel filter into formula to help us understand.
+# 
+#       I denotes the source image
+#       * denotes the 2D-convolution here.
+#  
+#                                   ∂ I
+#           I * Sobel_kernel_x = ----------
+#                                   ∂ x
+#
+#
+#                                   ∂ I
+#           I * Sobel_kernel_y = ----------
+#                                   ∂ y
 
 '''
