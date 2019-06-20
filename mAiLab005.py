@@ -160,7 +160,7 @@ def main():
 
    
 
-###     1. Output each actication and corresponding derivative as following.
+###     1. Output each activation and corresponding derivative as following.
 #
 #           1-a. Sigmoid
 #           1-b. tanh
@@ -182,3 +182,22 @@ def main():
 
 if __name__=='__main__':
     main()    
+
+
+
+'''
+
+Example output:
+
+Activation function and corresponding derivative is output and saved in sub-directory ./output_of_mAiLab005
+
+
+./output_of_mAiLab005
+    ELU.png
+    Leaky ReLU.png
+    ReLU.png
+    Sigmoid.png
+    tanh.png
+
+
+'''
