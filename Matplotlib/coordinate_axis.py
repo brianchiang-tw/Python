@@ -21,4 +21,8 @@ plt.ylim( (-50,50) )
 plt.xlabel("X axis")
 plt.ylabel("Y axis")
 
+
+plt.yticks([-40, -20, 0, 20, 40],[r'$really\ bad$', r'$bad$', r'$normal$', r'$good$', r'$really\ good$'])
+
+
 plt.show()
