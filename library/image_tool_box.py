@@ -57,7 +57,13 @@ def get_MNIST_image_header( file_handle ):
 
 # Create an image matrix with heigh, width and default pixel value
 def create_image_matrx( height = 2 , width = 2, default_pixel_value = 0 ): 
-    
+
+    if False == isinstance(height, int) or False == isinstance(width, int) or height < 1 or width < 1:
+
+        print("Image size must be a positive integer")
+
+        return None
+
     image_matrix = [ [ default_pixel_value for x in range(width) ] for y in range(height)  ]
     return image_matrix
 
@@ -303,11 +309,39 @@ def get_Sobel_gradient_magnitude( img_Gx, img_Gy ):
 # Get the maximum value of an given image
 def get_max_value_of_image( img ):
 
+    # First, apply max on each row
+    # Second, apply max on each Row's max value
     max_value =  max( map(max, img ) )
     return max_value
 
 
 
+# Get the summation value of an given image
+def get_sum_value_of_image( img ):
+
+    # First, apply sum on each row
+    # Second, apply sum on each Row's sum value
+    sum_value = sum( map(sum, img) )
+    return sum_value
+
+
+
+# Get the average value of an given image
+def get_average_value_of_image( img ):
+
+    sum_value = get_sum_value_of_image( img )
+
+    (h, w) = get_size_of_image( img )
+
+    total_pixel_count = h * w
+
+    average_value = sum_value // total_pixel_count
+
+    return average_value
+
+
+
+# Get the edge image of graditude image with specified threshold factor
 def get_edge_image( grad_magnitude_image, threshold_factor = 0.8 ):
 
     ( img_h, img_w ) = get_size_of_image( grad_magnitude_image )
@@ -366,3 +400,82 @@ def array_with_negation( array_2d ):
     array_negation = np.negative( array_2d )
 
     return array_negation
+
+
+# 2D Array with max pooling
+def array_with_max_pooling( array_2d ):
+
+    max_value = get_max_value_of_image( array_2d )
+    return max_value
+
+
+
+# 2D Array with average pooling
+def array_with_average_pooling( array_2d ):
+
+    avg_value = get_average_value_of_image( array_2d )
+    return avg_value
+
+
+
+# Slice an 2d array with specified region
+def get_sub_matrix( src, y_begin, y_end, x_begin, x_end):
+
+    sub_matrix = [ row[ x_begin : x_end ] for row in src [y_begin : y_end ] ]
+
+    return sub_matrix
+
+
+
+# 2D Array with pooling operation, with specified step_size and pooling_mode
+def array_pooling( array_2d, step_size = 2, pooling_mode = "Max" ):
+
+        # function guard:
+        # check and verify pooling_mode is correct
+    if "Max" != pooling_mode and "Average" != pooling_mode:
+        print("Invalid pooling mode.")
+        return None
+
+        # convert to numpy 2D array for slicing
+    numpy_2d_array = np.array( object=array_2d, dtype=np.uint8 )
+
+        # get height and width    
+    (h, w) = get_size_of_image( array_2d )
+
+        # pool window = step_size x step_size
+        # calculate height and width of pooling_image
+    h_of_pool_img = h // step_size
+    w_of_pool_img = w // step_size
+
+        # create an empty image for pooling output
+    pooling_img = create_image_matrx( height = h_of_pool_img, width = w_of_pool_img )
+
+    for y in range( h_of_pool_img ):
+        for x in range( w_of_pool_img ):
+            
+                # get the relation between pooling image and original input image
+            src_y_begin = y * step_size
+            src_y_end = src_y_begin + step_size
+
+            src_x_begin = x * step_size
+            src_x_end = src_x_begin + step_size
+
+            
+
+
+
+            pooling_window = get_sub_matrix( array_2d, src_y_begin, src_y_end, src_x_begin, src_x_end)
+
+
+            if "Max" == pooling_mode:
+                pooling_img[y][x] = array_with_max_pooling( pooling_window )
+
+            elif "Average" == pooling_mode:
+                pooling_img[y][x] = array_with_average_pooling( pooling_window )
+
+            else:
+                pass
+                # This case will be handled by the check and verification of the function guard
+            
+
+    return pooling_img

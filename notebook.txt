@@ -16,3 +16,25 @@ template of rounding-up or rounding-down
 v = 3.147
 print(math.ceil(v*100)/100)  # -> 2.36
 print(math.floor(v*100)/100)  # -> 2.35
+
+
+
+#===================================================
+Numpy syntax to slice an 2d array:
+array[ y : y + y_step , x : x + x_step ]
+
+# src_y_begin = y
+# src_y_end = y + y_step
+
+# src_x_begin = x
+# src_x_end = x + x_step
+
+# Example code snippet
+print("Slicing param:", src_y_begin, src_y_end, src_x_begin, src_x_end)
+
+# Slice input image into pooling window
+numpy_pooling_window = numpy_2d_array[ src_y_begin : src_y_end , src_x_begin : src_x_end ]
+
+print("Numpy pooling window:")
+print( numpy_pooling_window )
+
