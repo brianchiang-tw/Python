@@ -421,7 +421,7 @@ def array_with_average_pooling( array_2d ):
 # Slice an 2d array with specified region
 def get_sub_matrix( src, y_begin, y_end, x_begin, x_end):
 
-    sub_matrix = [ row[ x_begin : x_end ] for row in src [y_begin : y_end ] ]
+    sub_matrix = [ row[ x_begin : x_end ] for row in src [ y_begin : y_end ] ]
 
     return sub_matrix
 
