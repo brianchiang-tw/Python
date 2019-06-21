@@ -436,8 +436,7 @@ def array_pooling( array_2d, step_size = 2, pooling_mode = "Max" ):
         print("Invalid pooling mode.")
         return None
 
-        # convert to numpy 2D array for slicing
-    numpy_2d_array = np.array( object=array_2d, dtype=np.uint8 )
+
 
         # get height and width    
     (h, w) = get_size_of_image( array_2d )

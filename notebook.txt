@@ -23,6 +23,10 @@ print(math.floor(v*100)/100)  # -> 2.35
 Numpy syntax to slice an 2d array:
 array[ y : y + y_step , x : x + x_step ]
 
+
+# convert to numpy 2D array for slicing
+numpy_2d_array = np.array( object=array_2d, dtype=np.uint8 )
+
 # src_y_begin = y
 # src_y_end = y + y_step
 
