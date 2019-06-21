@@ -461,9 +461,6 @@ def array_pooling( array_2d, step_size = 2, pooling_mode = "Max" ):
             src_x_end = src_x_begin + step_size
 
             
-
-
-
             pooling_window = get_sub_matrix( array_2d, src_y_begin, src_y_end, src_x_begin, src_x_end)
 
 

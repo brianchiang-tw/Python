@@ -63,6 +63,8 @@ with open(path_of_MNIST_image, 'rb') as file_handle:
                 break
 
             else:
+                serial_number = index + 1
+
                 image_matrix = image_return
 
                     # Push origianl source image into image container
@@ -72,16 +74,25 @@ with open(path_of_MNIST_image, 'rb') as file_handle:
                 max_pooling_img = array_pooling(image_matrix, step_size=2, pooling_mode="Max")
                 max_pooling_img_container.append( max_pooling_img )
 
-                print("Max pooling image of input_#{:2d}".format( index+1 ) )
+                    # print to console
+                print("\n Max pooling image of input_#{:2d}".format( serial_number ) )
                 print_image_array( max_pooling_img )
+
+                    # output and saved as BitMap file
+                save_to_bmp(max_pooling_img, ouput_directory_path+"image_"+str(serial_number)+"_max_pooling")
+
 
 
                     # average pooling, with step_size = 2
                 avg_pooling_img = array_pooling(image_matrix, step_size=2, pooling_mode="Average")
                 avg_pooling_img_container.append( avg_pooling_img )
 
-                print("Average pooling image of input_#{:2d}".format( index+1 ) )
+                    # print to console
+                print("\n Average pooling image of input_#{:2d}".format( serial_number ) )
                 print_image_array( avg_pooling_img )
+
+                    # output and saved as BitMap file
+                save_to_bmp(avg_pooling_img, ouput_directory_path+"image_"+str(serial_number)+"_average_pooling")
 
 
 
