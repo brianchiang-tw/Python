@@ -2,7 +2,7 @@
 
 # 1. Study radial basis function (i.e., RBF [1]) and understand its mathematical meaning as well as application on machine learning.
 
-# 2. Preview algorithm of LeNet5 [2] and get ready into implementation.
+# 2. Preview algorithm of LeNet-5 [2] and get ready into implementation.
 
 
 
@@ -15,5 +15,5 @@
 
 
 
-# [2]. Gradient-Based Learning Applied to Document Recognition
+# [2]. LeNet-5: Gradient-Based Learning Applied to Document Recognition
 # http://yann.lecun.com/exdb/publis/pdf/lecun-01a.pdf
